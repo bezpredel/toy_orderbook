@@ -15,6 +15,11 @@ import java.util.TreeMap;
  * and an {@link ArrayDeque} to store orders per level.
  * This makes {@link #remove} operation {@code O(n) + O(log(m))} where {@code n} is a number of orders on a given level,
  * and {@code m} is a number of levels.
+ *
+ *
+ * NOTE: that this implementation does not listen for orders being filled, and does not clean up
+ * empty levels right away. I think it makes more sense because top levels are likely to be refilled soon.
+ * Some off-bound process for cleanup could be established if this assumption is wrong. 
  */
 class NaiveBookSideImpl implements BookSide {
     private final Side side;
@@ -49,6 +54,11 @@ class NaiveBookSideImpl implements BookSide {
         if (level == null) return;
 
         level.orders.remove(order);
+
+        // TODO: It is unclear whether this is optimal. Maybe best rely on lazy cleanup
+        if (level.orders.isEmpty()) {
+            levels.remove(limitPrice);
+        }
     }
 
     @Override
