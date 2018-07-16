@@ -5,6 +5,7 @@ import com.aratushn.toy_orderbook.api.primitives.Price;
 import com.aratushn.toy_orderbook.api.primitives.Quantity;
 
 import javax.annotation.Nonnull;
+import javax.annotation.concurrent.Immutable;
 import java.time.Instant;
 
 /**
@@ -13,6 +14,7 @@ import java.time.Instant;
  * Note: A trade can only be between one buy order and one sell order. Ie, if bid A is for 1000 shares, and there are
  * two matching offers for 500 shares each, there will be 2 trades.
  */
+@Immutable
 public interface Trade {
     /** Time this trade has occurred */
     @Nonnull Instant getTradeTime();
